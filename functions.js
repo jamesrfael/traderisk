@@ -32,10 +32,16 @@ function toast(msg){
   toastEl.classList.add('show');
   setTimeout(() => toastEl.classList.remove('show'), 1200);
 }
+const USD_NUM = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
 function dollars(v){
-  if(!Number.isFinite(v)) return '$0.00';
-  return v.toLocaleString(undefined, { style:'currency', currency:'USD', maximumFractionDigits:2 });
+  if (!Number.isFinite(v)) return '$0.00';
+  return '$' + USD_NUM.format(v);
 }
+
 function percentText(v){
   if(!Number.isFinite(v)) return '0%';
   const s = Number(v).toLocaleString(undefined, { maximumFractionDigits: 2 });
