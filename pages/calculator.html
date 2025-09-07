@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trade Calculator | TradeRisk</title>
+  <meta name="description" content="Use the TradeRisk Calculator to manage risk, calculate position sizing, and protect your capital effectively." />
+  <link rel="canonical" href="calculator.html" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="safe" id="app">
+    <!-- Header -->
+    <div id="header"></div>
+
+    <main class="wrap">
+      <section class="container">
+        <div class="card">
+          <h2>TradeRisk Calculator</h2>
+          <p>Quickly calculate your position size, margin, and risk exposure for safer trading decisions.</p>
+
+          <!-- Stoploss % -->
+          <div class="fieldWrap">
+            <div class="labelRow">
+              <div class="label">Stoploss %</div>
+            </div>
+            <div class="inputRow">
+              <input class="input" id="stoploss" type="text" inputmode="decimal" placeholder="0.00">
+            </div>
+          </div>
+
+          <!-- Account Risk -->
+          <div class="fieldWrap">
+            <div class="labelRow">
+              <div class="label">Account Risk</div>
+              <div class="hint" id="riskDefaultLabel">Default: 2%</div>
+            </div>
+            <div class="inputRow">
+              <input class="input" id="risk" type="text" inputmode="decimal" placeholder="0.00">
+              <button class="miniBtn" id="setRisk"><span class="miniBtnText">Set Default</span></button>
+            </div>
+          </div>
+
+          <!-- Account Capital -->
+          <div class="fieldWrap">
+            <div class="labelRow">
+              <div class="label">Account Capital</div>
+              <div class="hint" id="capitalDefaultLabel">Default: $10,000.00</div>
+            </div>
+            <div class="inputRow">
+              <input class="input" id="capital" type="text" inputmode="decimal" placeholder="0.00">
+              <button class="miniBtn" id="setCap"><span class="miniBtnText">Set Default</span></button>
+            </div>
+          </div>
+
+          <!-- Outputs -->
+          <div class="outBox">
+            <div class="outLabel">Margin</div>
+            <div class="outValue" id="marginOut">$0.00</div>
+          </div>
+          <div class="outBox">
+            <div class="outLabel">Risk Amount</div>
+            <div class="outValue" id="riskOut">$0.00</div>
+          </div>
+
+          <!-- Actions -->
+          <div class="actions center">
+            <button class="primaryBtn" id="clearAll">
+              <div class="gradientLayer">Clear All</div>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+  </div>
+
+  <!-- tiny toast -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="/load-components.js" defer></script>
+  <script src="/functions.js" defer></script>
+</body>
+</html>

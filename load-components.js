@@ -106,8 +106,8 @@ async function loadInto(id, url) {
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const headerP = loadInto('header', 'components/header.html');
-    const footerP = loadInto('footer', 'components/footer.html');
+    const headerP = loadInto('header', '/components/header.html');
+    const footerP = loadInto('footer', '/components/footer.html');
     await Promise.allSettled([headerP, footerP]);
     document.dispatchEvent(new CustomEvent('components:loaded'));
   } catch (err) {
