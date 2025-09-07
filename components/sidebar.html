@@ -1,26 +1,38 @@
 <!-- /components/sidebar.html -->
+
 <!-- Backdrop -->
 <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
 
 <!-- Sidebar -->
 <aside class="sidebar" id="sidebar" aria-hidden="true" tabindex="-1">
-    <div class="sidebarHeader">
-        <div class="sidebarTitle">Menu</div>
-        <button class="sidebarClose" id="sidebarClose" aria-label="Close navigation" title="Close">&times;</button>
-    </div>
+  
+  <!-- Header -->
+  <div class="sidebarHeader">
+    <div class="sidebarTitle">Menu</div>
+    <button 
+      class="sidebarClose" 
+      id="sidebarClose" 
+      aria-label="Close navigation" 
+      title="Close">
+      &times;
+    </button>
+  </div>
 
-    <nav class="sidebarNav" aria-label="Primary">
-        <a class="sidebarLink" href="index.html">Calculator</a>
-        <a class="sidebarLink" href="about.html">About</a>
-    </nav>
+  <!-- Primary Navigation -->
+  <nav class="sidebarNav" aria-label="Primary">
+    <a class="sidebarLink" href="index.html">Calculator</a>
+    <a class="sidebarLink" href="about-us.html">About</a>
+  </nav>
 
-    <div class="sidebarDivider"></div>
+  <div class="sidebarDivider"></div>
 
-    <nav class="sidebarNav" aria-label="Policies">
-        <a class="sidebarLink" href="privacy-policy.html">Privacy Policy</a>
-        <a class="sidebarLink" href="terms.html">Terms of Use</a>
-        <a class="sidebarLink" href="disclaimer.html">Disclaimer</a>
-        <a class="sidebarLink" href="cookies.html">Cookie Policy</a>
-        <a class="sidebarLink" href="contact.html">Contact</a>
-    </nav>
+  <!-- Policy Links -->
+  <nav class="sidebarNav" aria-label="Policies">
+    <a class="sidebarLink" href="privacy-policy.html">Privacy Policy</a>
+    <a class="sidebarLink" href="terms.html">Terms of Use</a>
+    <a class="sidebarLink" href="disclaimer.html">Disclaimer</a>
+    <a class="sidebarLink" href="cookies.html">Cookie Policy</a>
+    <a class="sidebarLink" href="contact.html">Contact</a>
+  </nav>
+
 </aside>
