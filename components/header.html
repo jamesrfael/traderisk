@@ -7,25 +7,19 @@
     <span class="navBar"></span>
   </button>
 
+  <!-- Website Title -->
   <h1 class="headerTitle">
     <a href="index.html" class="app-title-link">TradeRisk</a>
   </h1>
 
-  <button class="themeToggle" id="toggleTheme" aria-label="Toggle theme" title="Toggle theme">
-    <svg id="themeIcon" class="icon" width="22" height="22" viewBox="0 0 24 24"
-         fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"></svg>
-  </button>
-  <base href="http://127.0.0.1:5500/">
+  <!-- Reusable Theme Toggle Component -->
+  <theme-toggle id="headerThemeToggle" size="22" class="themeToggle" title="Toggle Theme"></theme-toggle>
 
+  <base href="http://127.0.0.1:5500/">
 </header>
 
+<!-- Sidebar Loader + Controller -->
 <script>
-/* Header-integrated sidebar loader + controller
-   - Fetches /components/sidebar.html once and appends to <body>
-   - Smooth slide-in with backdrop
-   - Locks page scroll while open (requires body.sidebar-open style)
-*/
-
 (function () {
   const SIDEBAR_URL = '/components/sidebar.html';
   const navToggle = document.getElementById('navToggle');
@@ -33,7 +27,11 @@
 
   async function mountSidebar() {
     if (loaded) return;
-    if (document.getElementById('sidebar') && document.getElementById('sidebarBackdrop')) { loaded = true; wire(); return; }
+    if (document.getElementById('sidebar') && document.getElementById('sidebarBackdrop')) {
+      loaded = true;
+      wire();
+      return;
+    }
 
     try {
       const res = await fetch(SIDEBAR_URL, { cache: 'no-cache' });
@@ -43,6 +41,7 @@
 
       const backdrop = wrap.querySelector('#sidebarBackdrop');
       const sidebar  = wrap.querySelector('#sidebar');
+
       if (backdrop) document.body.appendChild(backdrop);
       if (sidebar)  document.body.appendChild(sidebar);
 
@@ -56,7 +55,6 @@
   function wire() {
     const sidebar  = document.getElementById('sidebar');
     const backdrop = document.getElementById('sidebarBackdrop');
-    const closeBtn = document.getElementById('sidebarClose');
     if (!navToggle || !sidebar || !backdrop) return;
 
     function open() {
@@ -68,24 +66,36 @@
       sidebar.setAttribute('aria-hidden', 'false');
       sidebar.querySelector('.sidebarLink')?.focus({ preventScroll: true });
     }
+
     function close() {
       sidebar.classList.remove('open');
       backdrop.classList.remove('show');
       document.body.classList.remove('sidebar-open');
       navToggle.setAttribute('aria-expanded', 'false');
       sidebar.setAttribute('aria-hidden', 'true');
-      setTimeout(() => { if (!sidebar.classList.contains('open')) backdrop.hidden = true; }, 180);
+      setTimeout(() => {
+        if (!sidebar.classList.contains('open')) backdrop.hidden = true;
+      }, 180);
       navToggle.focus({ preventScroll: true });
     }
 
-    navToggle.addEventListener('click', () => sidebar.classList.contains('open') ? close() : open());
-    closeBtn?.addEventListener('click', close);
+    navToggle.addEventListener('click', () =>
+      sidebar.classList.contains('open') ? close() : open()
+    );
+
     backdrop.addEventListener('click', close);
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('open')) close(); });
-    sidebar.addEventListener('click', (e) => { if (e.target.closest('a')) close(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && sidebar.classList.contains('open')) close();
+    });
+    sidebar.addEventListener('click', (e) => {
+      if (e.target.closest('a')) close();
+    });
   }
 
   document.addEventListener('DOMContentLoaded', mountSidebar);
-  document.addEventListener('components:loaded', mountSidebar); // if you re-render header/footer dynamically
+  document.addEventListener('components:loaded', mountSidebar);
 })();
 </script>
+
+<!-- Theme Toggle Component -->
+<script type="module" src="/components/theme-toggle.js"></script>
