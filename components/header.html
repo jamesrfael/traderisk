@@ -1,11 +1,89 @@
 <!-- /components/header.html -->
 <header class="header">
-    <h1 class="headerTitle">
-      <a href="index.html" class="app-title-link">TradeRisk Calculator</a>
-    </h1>
-    <button class="themeToggle" id="toggleTheme" aria-label="Toggle theme" title="Toggle theme">
-      <svg id="themeIcon" class="icon" width="22" height="22" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"></svg>
-    </button>
-  </header>
-  
+  <!-- Left hamburger -->
+  <button class="navToggle" id="navToggle" aria-label="Open navigation" aria-haspopup="true" aria-expanded="false" title="Menu">
+    <span class="navBar"></span>
+    <span class="navBar"></span>
+    <span class="navBar"></span>
+  </button>
+
+  <h1 class="headerTitle">
+    <a href="index.html" class="app-title-link">TradeRisk Calculator</a>
+  </h1>
+
+  <button class="themeToggle" id="toggleTheme" aria-label="Toggle theme" title="Toggle theme">
+    <svg id="themeIcon" class="icon" width="22" height="22" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"></svg>
+  </button>
+</header>
+
+<script>
+/* Header-integrated sidebar loader + controller
+   - Fetches /components/sidebar.html once and appends to <body>
+   - Smooth slide-in with backdrop
+   - Locks page scroll while open (requires body.sidebar-open style)
+*/
+
+(function () {
+  const SIDEBAR_URL = '/components/sidebar.html';
+  const navToggle = document.getElementById('navToggle');
+  let loaded = false;
+
+  async function mountSidebar() {
+    if (loaded) return;
+    if (document.getElementById('sidebar') && document.getElementById('sidebarBackdrop')) { loaded = true; wire(); return; }
+
+    try {
+      const res = await fetch(SIDEBAR_URL, { cache: 'no-cache' });
+      const html = await res.text();
+      const wrap = document.createElement('div');
+      wrap.innerHTML = html;
+
+      const backdrop = wrap.querySelector('#sidebarBackdrop');
+      const sidebar  = wrap.querySelector('#sidebar');
+      if (backdrop) document.body.appendChild(backdrop);
+      if (sidebar)  document.body.appendChild(sidebar);
+
+      loaded = true;
+      wire();
+    } catch (e) {
+      console.error('[Sidebar] load failed:', e);
+    }
+  }
+
+  function wire() {
+    const sidebar  = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    const closeBtn = document.getElementById('sidebarClose');
+    if (!navToggle || !sidebar || !backdrop) return;
+
+    function open() {
+      sidebar.classList.add('open');
+      backdrop.hidden = false;
+      requestAnimationFrame(() => backdrop.classList.add('show'));
+      document.body.classList.add('sidebar-open');
+      navToggle.setAttribute('aria-expanded', 'true');
+      sidebar.setAttribute('aria-hidden', 'false');
+      sidebar.querySelector('.sidebarLink')?.focus({ preventScroll: true });
+    }
+    function close() {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('show');
+      document.body.classList.remove('sidebar-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      sidebar.setAttribute('aria-hidden', 'true');
+      setTimeout(() => { if (!sidebar.classList.contains('open')) backdrop.hidden = true; }, 180);
+      navToggle.focus({ preventScroll: true });
+    }
+
+    navToggle.addEventListener('click', () => sidebar.classList.contains('open') ? close() : open());
+    closeBtn?.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('open')) close(); });
+    sidebar.addEventListener('click', (e) => { if (e.target.closest('a')) close(); });
+  }
+
+  document.addEventListener('DOMContentLoaded', mountSidebar);
+  document.addEventListener('components:loaded', mountSidebar); // if you re-render header/footer dynamically
+})();
+</script>
